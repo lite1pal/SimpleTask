@@ -1,0 +1,19 @@
+Task management app will provide the ability to create tasks that you have to complete
+    Data models:
+        users
+        tasks
+    Actions:
+        sign up
+        log in (you can be authenticated just with Google so there is no need to sign up )
+        log out
+        create a task
+        update a task
+        make a task to be completed
+        delete a task
+    Technologies to use:
+        Typescript
+        MongoDB
+        Express.js
+        React.js
+        Node.js
+    
