@@ -1,8 +1,24 @@
 import express from "express";
+import session from "express-session";
 const app = express();
 
-app.get("/", (req, res) => {
-  res.status(200).json("Setting up Typescript with Express");
-});
+// imported routers
+import { usersRouter } from "./routes/users";
+
+// configures express sessions
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// parses req.body in object
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// listen for routes
+app.use("/users", usersRouter);
 
 export { app };
