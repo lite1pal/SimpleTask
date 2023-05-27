@@ -49,4 +49,4 @@ To start using SimpleTask, follow these steps:
 
 ## Conclusion
 
-SimpleTask is a user-friendly task management app developed using the MERN stack and TypeScript. With its straightforward interface, task creation and organization features, priority levels, reminders, completion tracking, and search capabilities, SimpleTask offers an easy-to-use
+SimpleTask is a user-friendly task management app developed using the MERN stack and TypeScript. With its straightforward interface, task creation and organization features, priority levels, reminders, completion tracking, and search capabilities, SimpleTask offers an easy-to-use experience of managing your daily tasks.
