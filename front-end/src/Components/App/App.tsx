@@ -19,7 +19,7 @@ const App = () => {
 
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
-    console.log(isAuth);
+    // console.log(isAuth);
     if (!sessionId) {
       changeAuthStatus(false);
     } else {
@@ -32,7 +32,13 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={isAuth ? <Main /> : <Navigate to="/login" />}
+          element={
+            isAuth ? (
+              <Main changeAuthStatus={changeAuthStatus} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/login"
