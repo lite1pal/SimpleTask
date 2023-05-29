@@ -1,0 +1,80 @@
+.AddingTask {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 20px;
+  background-color: rgba(245, 245, 245, 1);
+  top: 18%;
+  left: 50%;
+  /* width: 20%; */
+  /* height: 40%; */
+  opacity: 1;
+  line-height: 2rem;
+  border-radius: 7px;
+  transition: opacity 0.3s ease-out;
+}
+
+.hide {
+  opacity: 0;
+}
+
+.task-title {
+  margin-bottom: 15px;
+}
+
+.task-deadline {
+  margin-bottom: 25px;
+}
+
+.AddingTask input {
+  flex: 1;
+  font-size: 1rem;
+  height: 1.6rem;
+  transition: 300ms;
+  width: 80%;
+  border: none;
+  border-bottom: 2px solid currentColor;
+  outline: none;
+}
+
+.AddingTask input:hover {
+  width: 90%;
+  border-color: grey;
+}
+
+.add-task2 {
+  transition: 400ms;
+  background: none;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  box-sizing: border-box;
+  color: #0f1111;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Amazon Ember", sans-serif;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 11px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+  width: 80%;
+}
+
+.add-task2:hover {
+  background-color: #f7fafa;
+  font-size: 14px;
+}
+
+.add-task2:focus {
+  border-color: #008296;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  outline: 0;
+}
