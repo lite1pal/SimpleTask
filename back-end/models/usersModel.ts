@@ -5,6 +5,7 @@ interface IUser extends Document {
   email: string;
   password: string;
   age: number;
+  sessionId: string;
 }
 
 const userSchema: Schema = new Schema({
@@ -16,8 +17,9 @@ const userSchema: Schema = new Schema({
   },
   password: { type: String, required: true },
   age: { type: Number, required: true },
+  sessionId: { type: String, required: true },
 });
 
 const User = mongoose.model<IUser>("User", userSchema);
 
-export { User };
+export default User;

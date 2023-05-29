@@ -9,5 +9,9 @@ const usersRouter = express_1.default.Router();
 exports.usersRouter = usersRouter;
 // imported controllers
 const usersController_1 = require("../controllers/usersController");
+usersRouter.get("/:name", usersController_1.getSingleUser);
 usersRouter.get("/", usersController_1.getUsers);
-usersRouter.post("/", usersController_1.createUser);
+usersRouter.post("/create", usersController_1.createUser);
+usersRouter.post("/auth", usersController_1.authUser);
+usersRouter.get("/check", usersController_1.checkAuth);
+usersRouter.delete("/delete/:name", usersController_1.deleteUser);
