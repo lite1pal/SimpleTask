@@ -10,27 +10,15 @@ If you often find yourself forgetting tasks throughout the day, resulting in a s
 
 SimpleTask boasts a clean and intuitive user interface that ensures a seamless experience for users of all technical backgrounds. The design prioritizes simplicity, making it easy for anyone to get started with task management without feeling overwhelmed.
 
-2. Task Creation and Organization
+2. Task Creation
 
-The app allows users to create tasks effortlessly. Simply input a task name, description, and due date to add a new task to your list. You can also categorize tasks using customizable tags, enabling easy organization and filtering based on your preferences.
+The app allows users to create tasks effortlessly. Simply input a task name, description, and due date to add a new task to your list.
 
-3. Task Prioritization
+3. Task Deadline
 
-To help you stay focused on what's important, SimpleTask offers a prioritization feature. Assign priority levels (e.g., high, medium, low) to your tasks, ensuring you never lose sight of the most critical items on your to-do list.
+The app gives an easy way to add a task with a deadline. Click on black circle with plus inside, input a task name and a deadline for it. Now the deadline of the task can be easily seen in task's list just below the task.
 
-4. Task Reminders
-
-Never miss a deadline again! SimpleTask includes a reminder system that notifies you of upcoming tasks. Whether it's a pop-up notification on your device or an email reminder, you can choose the notification method that works best for you.
-
-5. Task Completion Tracking
-
-Stay motivated by tracking your progress. SimpleTask allows you to mark tasks as complete, giving you a sense of accomplishment as you make progress throughout the day. Completed tasks are conveniently stored in a separate section for easy reference.
-
-6. Task Search and Filtering
-
-With SimpleTask's search and filtering capabilities, finding specific tasks is a breeze. Use the search bar to quickly locate tasks by their names or descriptions. Additionally, you can apply filters based on tags, due dates, or priority levels to narrow down your task list and focus on what matters most.
-
-7. User Account Management
+3. User Account Management
 
 SimpleTask provides user account functionality, allowing you to create a personalized account to access your tasks from anywhere. Your tasks and settings are securely stored in the cloud, ensuring they are accessible across multiple devices.
 
@@ -49,4 +37,4 @@ To start using SimpleTask, follow these steps:
 
 ## Conclusion
 
-SimpleTask is a user-friendly task management app developed using the MERN stack and TypeScript. With its straightforward interface, task creation and organization features, priority levels, reminders, completion tracking, and search capabilities, SimpleTask offers an easy-to-use experience of managing your daily tasks.
+SimpleTask is a user-friendly task management app developed using the MERN stack and TypeScript. With its straightforward interface, task creation, task deadline and completion tracking SimpleTask offers an easy-to-use experience of managing your daily tasks.
