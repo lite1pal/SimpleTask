@@ -1,1 +1,92 @@
+.Login {
+  text-align: center;
+}
 
+.login-header {
+  margin: 20% 0;
+  font-size: 1.5em;
+}
+
+.login-main {
+  display: flex;
+  flex-direction: column;
+}
+.login-input {
+  width: 70%;
+  font-size: 1.5em;
+  border: none;
+  border-bottom: 2px solid currentColor;
+  outline: none;
+  padding: 10px;
+  margin: 0 auto;
+  margin-bottom: 20%;
+  transition: 300ms;
+}
+
+.login-input:hover {
+  border-color: grey;
+}
+
+.login-submit {
+  width: 35%;
+  height: 2em;
+  margin: 0 auto;
+  transition: 400ms;
+  background: none;
+  border-radius: 5px;
+  background-color: #fff;
+  border: 1px solid #d5d9d9;
+  box-shadow: rgba(213, 217, 217, 0.5) 0 2px 5px 0;
+  color: #0f1111;
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 0 10px 0 11px;
+  text-decoration: none;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: middle;
+}
+
+.or-between-buttons {
+  margin: 0 auto;
+  margin-top: 10%;
+  font-size: 1.2em;
+}
+.login-google {
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.login-signup-link {
+  font-size: 1.2em;
+  margin-top: 17%;
+  text-decoration: none;
+}
+
+@media only screen and (min-width: 600px) {
+  .Login {
+    margin: 0 auto;
+  }
+
+  .login-header {
+    margin: 5% 0;
+    margin-bottom: 8%;
+    font-size: 0.8em;
+  }
+
+  .login-main {
+    border: 1px solid rgba(213, 217, 217, 0.5);
+    border-radius: 7px;
+    padding: 20px;
+  }
+
+  .login-input {
+    width: 100%;
+    font-size: 1.1em;
+  }
+
+  .login-submit {
+    font-size: 1em;
+  }
+}

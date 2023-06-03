@@ -1,6 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import User from "../models/usersModel";
-import { server } from "../server";
+import Task from "../models/tasksModel";
+
+import { verifyJWT } from "../services/google";
+
+import {
+  validatePassword,
+  hashPassword,
+  comparePassword,
+} from "../helpers/helpers";
 
 const getUsers = async (req: Request, res: Response): Promise<Response> => {
   try {
@@ -29,18 +37,19 @@ const getSingleUser = async (
 const createUser = async (req: Request, res: Response): Promise<Response> => {
   try {
     // gets name, email, password and age values from the request body
-    const { name, email, password, age } = req.body;
-    if (!name || !email || !password || !age)
+    const { name, email, password } = req.body;
+    if (!name || !email || !password)
       return res.status(400).json("Some input field value is missing");
 
+    if (!validatePassword) return res.status(400).json("Password is invalid");
+    const hashedPassword = await hashPassword(password);
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(404).json("User with such email is created already");
     const newUser = await User.create({
       name,
       email,
-      password,
-      age,
+      password: hashedPassword,
       sessionId: "pending",
     });
     await newUser.save();
@@ -60,6 +69,9 @@ const authUser = async (req: Request, res: Response): Promise<Response> => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json("There is no user with such email");
 
+    const isPasswordTheSame = await comparePassword(password, user.password);
+    if (!isPasswordTheSame)
+      return res.status(401).json("Password is incorrect for this user");
     const updatedUser = await User.findOneAndUpdate(
       {
         email,
@@ -81,29 +93,63 @@ const authUser = async (req: Request, res: Response): Promise<Response> => {
   }
 };
 
-const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
-  const clientSessionId = req.headers.authorization?.split(" ")[1];
-  const clientEmail = req.headers.authorization?.split(" ")[2];
-  if (!clientSessionId || !clientEmail)
-    return res.status(401).json("authorization data is missing");
+const authUserGoogle = async (req: Request, res: Response) => {
+  try {
+    const { token } = req.body;
+    if (!token)
+      return res.status(400).json({ message: "There is no provided token" });
 
-  const user = await User.findOne({
-    email: clientEmail,
-    sessionId: clientSessionId,
-  });
+    const user = await verifyJWT(process.env.GOOGLE_CLIENT_ID, token);
+    if (!user)
+      return res
+        .status(401)
+        .json({ message: "token was not verified by google" });
+    const existingUser = await User.findOne({ email: user.email });
+    if (!existingUser) {
+      const newUser = await User.create({
+        name: user.given_name,
+        email: user.email,
+        password: user.sub,
+        sessionId: req.sessionID,
+      });
+      await newUser.save();
+      const { _id, name, email, sessionId } = newUser;
 
-  const serverSessionId = user?.sessionId;
-
-  if (!user || serverSessionId !== clientSessionId)
-    return res.status(404).json("Authorization failed");
-
-  next();
+      return res.status(200).json({
+        message: "User was verified by Google!",
+        user: { _id, name, email, sessionId },
+      });
+    } else {
+      return res.status(200).json({
+        message: "User was verified by Google!",
+        user: {
+          name: existingUser.name,
+          email: existingUser.email,
+          sessionId: existingUser.sessionId,
+          _id: existingUser._id,
+        },
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    return res
+      .status(500)
+      .json("Error occured while authorizing a user via Google");
+  }
 };
 
 const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { name } = req.params;
-    const deletedUser = await User.deleteOne({ name });
+    const { email } = req.params;
+    const user = await User.findOne({ email });
+    if (!user)
+      return res
+        .status(404)
+        .json({ message: "There is no user with such email" });
+    // deletes all tasks of the user
+    await Task.deleteMany({ user: user._id });
+    // deletes the user
+    const deletedUser = await User.deleteOne({ email });
     return res.status(200).json({ message: "User is deleted.", deletedUser });
   } catch (error) {
     console.error(error);
@@ -111,4 +157,11 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getUsers, getSingleUser, createUser, authUser, checkAuth, deleteUser };
+export {
+  getUsers,
+  getSingleUser,
+  createUser,
+  authUser,
+  authUserGoogle,
+  deleteUser,
+};

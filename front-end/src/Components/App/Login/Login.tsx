@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
-import Cookie from "js-cookie";
+import Cookies from "js-cookie";
+import jwt from "jwt-decode";
 import "./Login.css";
 
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
 
 const Login = ({
   changeAuthStatus,
+  apiUrl,
 }: {
   changeAuthStatus: (status: boolean) => void;
+  apiUrl: string;
 }) => {
   const [inputs, setInputs] = useState({ email: "", password: "" });
   const redirect = useNavigate();
@@ -29,32 +33,63 @@ const Login = ({
         },
         body: JSON.stringify(body),
       };
-      const response = await fetch(
-        "http://localhost:4001/users/auth",
-        requestOptions
-      );
+      const response = await fetch(`${apiUrl}/users/auth`, requestOptions);
       const parseRes = await response.json();
       if (response.ok) {
-        Cookie.set("sessionId", parseRes.sessionId);
-        Cookie.set("name", parseRes.user.name);
-        Cookie.set("email", parseRes.user.email);
-        Cookie.set("id", parseRes.user._id);
+        Cookies.set("sessionId", parseRes.sessionId);
+        Cookies.set("name", parseRes.user.name);
+        Cookies.set("email", parseRes.user.email);
+        Cookies.set("id", parseRes.user._id);
         changeAuthStatus(true);
         redirect("/main");
+      } else {
+        console.log(parseRes);
       }
-      console.log(parseRes);
     } catch (error) {
       return console.error(error);
     }
   };
+
+  const authUserGoogle = async (token: any) => {
+    try {
+      const body = { token };
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+      const response = await fetch(
+        `${apiUrl}/users/auth/google`,
+        requestOptions
+      );
+      const parseRes = await response.json();
+      console.log(parseRes);
+      if (response.ok) {
+        Cookies.set("sessionId", parseRes.user.sessionId);
+        Cookies.set("name", parseRes.user.name);
+        Cookies.set("email", parseRes.user.email);
+        Cookies.set("id", parseRes.user._id);
+        changeAuthStatus(true);
+        redirect("/main");
+      } else {
+        console.log(parseRes);
+      }
+    } catch (error) {
+      return console.error(error);
+    }
+  };
+
   return (
     <div className="Login">
-      <div className="login-title">
+      <div className="login-header">
         <h1>Login</h1>
       </div>
-      <form onSubmit={(e) => authUser(e)}>
-        <div className="login-inputs">
+      <form className="login-form" onSubmit={(e) => authUser(e)}>
+        <div className="login-main">
           <input
+            className="login-input"
             onChange={(e) => onChangeSetInputs(e)}
             type="email"
             name="email"
@@ -62,20 +97,40 @@ const Login = ({
             required
           />
           <input
+            className="login-input"
             onChange={(e) => onChangeSetInputs(e)}
             type="password"
             name="password"
             placeholder="password"
             required
           />
-        </div>
-        <div className="login-buttons">
-          <button type="submit" className="login-button">
-            Login
+          <button type="submit" className="login-submit">
+            Sign in
           </button>
+          <p className="or-between-buttons">or</p>
+          <div className="login-google">
+            <GoogleLogin
+              onSuccess={(credentialResponse: any) => {
+                authUserGoogle(credentialResponse.credential);
+              }}
+              onError={() => {
+                console.log("Login Failed");
+              }}
+              // type="icon"
+              shape="circle"
+              useOneTap
+              size="large"
+            />
+          </div>
+          <a
+            onClick={() => redirect("/signup")}
+            href=""
+            className="login-signup-link"
+          >
+            Sign up
+          </a>
         </div>
       </form>
-      <a>Sign up if you do not have an account</a>
     </div>
   );
 };
