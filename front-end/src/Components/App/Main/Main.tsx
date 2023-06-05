@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import Cookies from "js-cookie";
 
 import "./Main.css";
@@ -6,7 +6,7 @@ import "./Main.css";
 import AddingTask from "./AddingTask/AddingTask";
 import Loading from "../../Loading/Loading";
 
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Task {
@@ -29,7 +29,7 @@ const Main = ({
 }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [addTaskComponentVision, setAddTaskComponentVision] = useState(false);
-  const [taskItemVision, setTaskItemVision] = useState(true);
+  // const [taskItemVision, setTaskItemVision] = useState(true);
   const taskRef = useRef(null);
   const addTask = useRef<HTMLElement | null>(null);
   let deadlineString: string;

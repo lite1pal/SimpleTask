@@ -13,7 +13,7 @@ import Cookies from "js-cookie";
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const apiUrl = "http://localhost:4001";
+  const apiUrl = "https://simple-task-server.onrender.com";
 
   const changeAuthStatus = (boolean: boolean) => {
     setIsAuth(boolean);
