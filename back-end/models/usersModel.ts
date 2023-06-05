@@ -4,7 +4,6 @@ interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  age: number;
   sessionId: string;
 }
 
@@ -16,7 +15,6 @@ const userSchema: Schema = new Schema({
     unique: true,
   },
   password: { type: String, required: true },
-  age: { type: Number, required: true },
   sessionId: { type: String, required: true },
 });
 

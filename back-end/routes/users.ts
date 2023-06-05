@@ -2,21 +2,24 @@ import express from "express";
 
 const usersRouter = express.Router();
 
-// imported controllers
+import passport from "passport";
+
+// imports controllers
 import {
   getUsers,
   getSingleUser,
   createUser,
   authUser,
-  checkAuth,
+  authUserGoogle,
   deleteUser,
 } from "../controllers/usersController";
+import { checkAuth } from "../middlewares/middlewares";
 
-usersRouter.get("/:name", getSingleUser);
-usersRouter.get("/", getUsers);
+usersRouter.get("/:name", checkAuth, getSingleUser);
+usersRouter.get("/", checkAuth, getUsers);
 usersRouter.post("/create", createUser);
 usersRouter.post("/auth", authUser);
-usersRouter.get("/check", checkAuth);
-usersRouter.delete("/delete/:name", deleteUser);
+usersRouter.post("/auth/google", authUserGoogle);
+usersRouter.delete("/delete/:email", deleteUser);
 
 export { usersRouter };

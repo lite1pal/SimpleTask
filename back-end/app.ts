@@ -1,16 +1,18 @@
 import express from "express";
 const app = express();
 
-// imported routers
+// imports routers
 import { usersRouter } from "./routes/users";
 import { tasksRouter } from "./routes/tasks";
 
-// imported third-parties
+// imports third-parties
 import session from "express-session";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
+dotenv.config();
 
 // configures express sessions
 app.use(
@@ -24,6 +26,7 @@ app.use(
   })
 );
 
+// parses cookies
 app.use(cookieParser());
 
 // configures resources that are allowed to make requests to this server
@@ -39,7 +42,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// listen for routes
+// listens for routes
 app.use("/users", usersRouter);
 app.use("/tasks", tasksRouter);
 

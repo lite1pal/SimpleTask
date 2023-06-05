@@ -32,7 +32,6 @@ const userSchema = new mongoose_1.Schema({
         unique: true,
     },
     password: { type: String, required: true },
-    age: { type: Number, required: true },
     sessionId: { type: String, required: true },
 });
 const User = mongoose_1.default.model("User", userSchema);

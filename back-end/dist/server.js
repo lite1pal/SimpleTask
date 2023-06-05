@@ -15,18 +15,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.server = void 0;
 const http_1 = __importDefault(require("http"));
 const app_1 = require("./app");
-const dotenv_1 = __importDefault(require("dotenv"));
 const mongoose_1 = __importDefault(require("mongoose"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const server = http_1.default.createServer(app_1.app);
 exports.server = server;
-dotenv_1.default.config();
 const port = process.env.SERVER_PORT || 4001;
 const ATLAS_URI = process.env.ATLAS_URI || "";
 const startServer = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
         yield mongoose_1.default.connect(ATLAS_URI);
         server.listen(port, () => {
-            console.log(`MongoDB connected, server is on http://localhost:${port}`);
+            console.log(`MongoDB connected, server is on ${process.env.API_URL}:${port}`);
         });
     }
     catch (error) {

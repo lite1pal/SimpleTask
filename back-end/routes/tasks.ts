@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from "express";
+import express from "express";
 const tasksRouter = express();
 
 import {
@@ -6,15 +6,10 @@ import {
   createTask,
   deleteTask,
 } from "../controllers/tasksController";
-import { checkAuth } from "../controllers/usersController";
-
-// const checkAuth = async (req: Request, res: Response, next: NextFunction) => {
-//   console.log(req);
-//   next();
-// };
+import { checkAuth } from "../middlewares/middlewares";
 
 tasksRouter.get("/:user_id", checkAuth, getTasks);
-tasksRouter.post("/create", createTask);
-tasksRouter.delete("/delete/:_id", deleteTask);
+tasksRouter.post("/create", checkAuth, createTask);
+tasksRouter.delete("/delete/:_id", checkAuth, deleteTask);
 
 export { tasksRouter };

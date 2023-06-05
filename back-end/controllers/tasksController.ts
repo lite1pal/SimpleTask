@@ -12,14 +12,6 @@ const getTasks = async (req: Request, res: Response) => {
   }
 };
 
-const getSingleTask = async (req: Request, res: Response) => {
-  try {
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json("Error occured while retrieving a user");
-  }
-};
-
 const createTask = async (req: Request, res: Response) => {
   try {
     const { title, deadline, user_id } = req.body;
@@ -39,6 +31,26 @@ const createTask = async (req: Request, res: Response) => {
   }
 };
 
+const updateTask = async (req: Request, res: Response) => {
+  try {
+    const { title, deadline } = req.body;
+    let updatedTask: any;
+    if (title && deadline) {
+      updatedTask = await Task.updateOne({ title, deadline });
+    } else if (title && !deadline) {
+      updatedTask = await Task.updateOne({ title });
+    } else if (!title && deadline) {
+      updatedTask = await Task.updateOne({ deadline });
+    } else {
+      return res.status(400).json("No value was provided to update");
+    }
+    return res.status(200).json({ message: "Task is updated", updatedTask });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json("Error occured while updating a task");
+  }
+};
+
 const deleteTask = async (req: Request, res: Response) => {
   try {
     const { _id } = req.params;
@@ -52,4 +64,4 @@ const deleteTask = async (req: Request, res: Response) => {
   }
 };
 
-export { getTasks, createTask, deleteTask };
+export { getTasks, createTask, updateTask, deleteTask };

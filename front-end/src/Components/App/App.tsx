@@ -12,15 +12,20 @@ import Cookies from "js-cookie";
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const apiUrl = "http://localhost:4001";
 
   const changeAuthStatus = (boolean: boolean) => {
     setIsAuth(boolean);
   };
 
+  setTimeout(() => {
+    setIsLoading(false);
+  }, 1500);
+
   useEffect(() => {
     const sessionId = Cookies.get("sessionId");
-    // console.log(isAuth);
-    if (!sessionId) {
+    if (!sessionId || sessionId === "undefined") {
       changeAuthStatus(false);
     } else {
       changeAuthStatus(true);
@@ -32,13 +37,7 @@ const App = () => {
       <Routes>
         <Route
           path="/"
-          element={
-            isAuth ? (
-              <Main changeAuthStatus={changeAuthStatus} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
+          element={isAuth ? <Navigate to="/main" /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"
@@ -46,16 +45,35 @@ const App = () => {
             isAuth ? (
               <Navigate to="/main" />
             ) : (
-              <Login changeAuthStatus={changeAuthStatus} />
+              <Login
+                changeAuthStatus={changeAuthStatus}
+                apiUrl={apiUrl}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
             )
           }
         />
-        <Route path="/signup" element={<SignUp />} />
+        <Route
+          path="/signup"
+          element={
+            <SignUp
+              apiUrl={apiUrl}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />
+          }
+        />
         <Route
           path="/main"
           element={
             isAuth ? (
-              <Main changeAuthStatus={changeAuthStatus} />
+              <Main
+                changeAuthStatus={changeAuthStatus}
+                apiUrl={apiUrl}
+                isLoading={isLoading}
+                setIsLoading={setIsLoading}
+              />
             ) : (
               <Navigate to="/login" />
             )

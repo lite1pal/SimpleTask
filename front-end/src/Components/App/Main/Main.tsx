@@ -4,6 +4,10 @@ import Cookies from "js-cookie";
 import "./Main.css";
 
 import AddingTask from "./AddingTask/AddingTask";
+import Loading from "../../Loading/Loading";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface Task {
   _id: string;
@@ -15,8 +19,13 @@ interface Task {
 
 const Main = ({
   changeAuthStatus,
+  apiUrl,
+  isLoading,
 }: {
   changeAuthStatus: (status: boolean) => void;
+  apiUrl: string;
+  isLoading: boolean;
+  setIsLoading: any;
 }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [addTaskComponentVision, setAddTaskComponentVision] = useState(false);
@@ -49,19 +58,21 @@ const Main = ({
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${Cookies.get("sessionId")} ${Cookies.get(
+            "email"
+          )}`,
         },
         body: JSON.stringify(body),
       };
-      const response = await fetch(
-        "http://localhost:4001/tasks/create",
-        requestOptions
-      );
+      const response = await fetch(`${apiUrl}/tasks/create`, requestOptions);
       const parseRes = await response.json();
       console.log(parseRes);
       if (response.ok) {
         e.target.task.value = "";
         const newTask: Task = parseRes.newTask;
         setTasks([...tasks, newTask]);
+      } else {
+        console.log(parseRes);
       }
     } catch (error) {
       return console.error(error);
@@ -75,14 +86,22 @@ const Main = ({
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${Cookies.get("sessionId")} ${Cookies.get(
+            "email"
+          )}`,
         },
       };
-      await fetch(
-        `http://localhost:4001/tasks/delete/${task._id}`,
+      const response = await fetch(
+        `${apiUrl}/tasks/delete/${task._id}`,
         requestOptions
       );
-      task.completed = true;
-      setTasks([...tasks]);
+      const parseRes = await response.json();
+      if (response.ok) {
+        task.completed = true;
+        setTasks([...tasks]);
+      } else {
+        console.log(parseRes);
+      }
     } catch (error) {
       return console.error(error);
     }
@@ -91,7 +110,6 @@ const Main = ({
   useEffect(() => {
     const getTasks = async () => {
       try {
-        // console.log(1);
         const user_id = Cookies.get("id");
         const requestOptions = {
           method: "GET",
@@ -103,12 +121,14 @@ const Main = ({
           },
         };
         const response = await fetch(
-          `http://localhost:4001/tasks/${user_id}`,
+          `${apiUrl}/tasks/${user_id}`,
           requestOptions
         );
         const parseRes = await response.json();
         if (response.ok) {
           setTasks(parseRes.tasks);
+        } else {
+          console.log(parseRes);
         }
       } catch (error) {
         return console.error(error);
@@ -119,83 +139,92 @@ const Main = ({
 
   return (
     <div className="Main">
-      <div className="header">
-        <button title="Settings" className="header-logout">
-          <i className="fa-solid fa-gear"></i>
-        </button>
-        <h2 className="header-title">Your tasks for the day</h2>
-        <button title="Log out" className="header-logout" onClick={logOut}>
-          <i className="fa-solid fa-arrow-right-from-bracket"></i>
-        </button>
-      </div>
-      <div className="tasks-field">
-        <ul>
-          {tasks.length > 0 ? (
-            tasks.map((task: Task) => {
-              deadlineString =
-                task.deadline.toString() !== "2100-06-01T09:00:00.000Z"
-                  ? new Date(task.deadline).toLocaleString(undefined, {
-                      weekday: "long",
-                      // year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                      hour: "numeric",
-                      minute: "numeric",
-                    })
-                  : "";
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="header">
+            <button title="Settings" className="header-settings">
+              <i className="fa-solid fa-gear fa-2xl"></i>
+            </button>
+            <h1 className="header-title">Simple Task</h1>
+            <button title="Log out" className="header-logout" onClick={logOut}>
+              <i className="fa-solid fa-arrow-right-from-bracket fa-2xl"></i>
+            </button>
+          </div>
+          <div className="tasks-field">
+            <ul>
+              {tasks.length > 0 ? (
+                tasks.map((task: Task) => {
+                  deadlineString =
+                    task.deadline.toString() !== "2100-06-01T09:00:00.000Z"
+                      ? new Date(task.deadline).toLocaleString(undefined, {
+                          weekday: "long",
+                          month: "long",
+                          day: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
+                        })
+                      : "";
 
-              return (
-                <li ref={taskRef} className="task-item" key={task._id}>
-                  <div className="complete-button">
-                    <i
-                      title="complete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteTask(e, task);
-                      }}
-                      className={
-                        task.completed ? "" : "fa-solid fa-circle-check"
-                      }
-                    ></i>
-                  </div>
-                  <div className="title">
-                    <p>{task.completed ? <s>{task.title}</s> : task.title}</p>
-                    <i>{deadlineString}</i>
-                  </div>
-                  {/* <div className="deadline">{deadlineString}</div> */}
-                </li>
-              );
-            })
-          ) : (
-            <li className="no-items">No tasks yet</li>
-          )}
-        </ul>
-        <div className="add-icon">
-          <i
-            onClick={() => handleAddTaskVision()}
-            className="fa-solid fa-circle-plus fa-2xl"
-          ></i>
-        </div>
-        <AddingTask
-          addTaskComponentVision={addTaskComponentVision}
-          addTask={addTask}
-          tasks={tasks}
-          setTasks={setTasks}
-        />
-      </div>
-      <div className="input-field">
-        <form onSubmit={createTask}>
-          <input
-            autoComplete="off"
-            type="text"
-            name="task"
-            placeholder="Quick task"
-          />
-          <button className="add-task" title="Add a task" type="submit">
-            Add a task
-          </button>
-        </form>
-      </div>
+                  return (
+                    <li ref={taskRef} className="task-item" key={task._id}>
+                      <div className="complete-button">
+                        <i
+                          title="complete"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteTask(e, task);
+                          }}
+                          className={
+                            task.completed ? "" : "fa-solid fa-circle-check"
+                          }
+                        ></i>
+                      </div>
+                      <div className="title">
+                        <p>
+                          {task.completed ? <s>{task.title}</s> : task.title}
+                        </p>
+                        <i>{deadlineString}</i>
+                      </div>
+                    </li>
+                  );
+                })
+              ) : (
+                <li className="no-items">No tasks yet</li>
+              )}
+            </ul>
+            <div className="add-icon">
+              <i
+                onClick={() => handleAddTaskVision()}
+                className="fa-solid fa-circle-plus fa-2xl"
+              ></i>
+            </div>
+            <AddingTask
+              addTaskComponentVision={addTaskComponentVision}
+              addTask={addTask}
+              tasks={tasks}
+              setTasks={setTasks}
+              apiUrl={apiUrl}
+            />
+          </div>
+          <div className="input-field">
+            <form onSubmit={createTask}>
+              <input
+                className="input-task"
+                autoComplete="off"
+                type="text"
+                name="task"
+                placeholder="Quick task"
+              />
+              <button className="add-task" title="Add a task" type="submit">
+                Add a task
+              </button>
+            </form>
+          </div>
+          <ToastContainer />
+        </>
+      )}
     </div>
   );
 };

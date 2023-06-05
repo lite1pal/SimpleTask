@@ -8,6 +8,7 @@ const AddingTask = ({
   addTaskComponentVision,
   tasks,
   setTasks,
+  apiUrl,
 }: any) => {
   const [inputs, setInputs] = useState({ title: "", deadline: new Date() });
 
@@ -26,21 +27,21 @@ const AddingTask = ({
         method: "POST",
         headers: {
           "Content-type": "application/json",
+          Authorization: `Bearer ${Cookies.get("sessionId")} ${Cookies.get(
+            "email"
+          )}`,
         },
         body: JSON.stringify(body),
       };
-      const response = await fetch(
-        `http://localhost:4001/tasks/create`,
-        requestOptions
-      );
+      const response = await fetch(`${apiUrl}/tasks/create`, requestOptions);
       const parseRes = await response.json();
-      console.log(parseRes);
       if (response.ok) {
-        // something's going on
         e.target.title.value = "";
         e.target.deadline.value = "";
         const newTask = parseRes.newTask;
         setTasks([...tasks, newTask]);
+      } else {
+        console.log(parseRes);
       }
     } catch (error) {
       return console.error(error);
@@ -54,11 +55,17 @@ const AddingTask = ({
       <form onSubmit={(e) => createTaskWithDeadline(e)}>
         <div className="task-title">
           <h5>What is a task?</h5>
-          <input onChange={onChangeSetInputs} type="text" name="title" />
+          <input
+            className="task-input text"
+            onChange={onChangeSetInputs}
+            type="text"
+            name="title"
+          />
         </div>
         <div className="task-deadline">
           <h5>Due date</h5>
           <input
+            className="task-input deadline"
             onChange={onChangeSetInputs}
             type="datetime-local"
             name="deadline"

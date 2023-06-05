@@ -1,21 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Cookies from "js-cookie";
-import jwt from "jwt-decode";
 import "./Login.css";
 
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin, googleLogout, useGoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import Loading from "../../Loading/Loading";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = ({
   changeAuthStatus,
   apiUrl,
+  isLoading,
 }: {
   changeAuthStatus: (status: boolean) => void;
   apiUrl: string;
+  isLoading: boolean;
+  setIsLoading: any;
 }) => {
   const [inputs, setInputs] = useState({ email: "", password: "" });
   const redirect = useNavigate();
-
   const onChangeSetInputs = (e: any) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
   };
@@ -23,6 +28,7 @@ const Login = ({
   const authUser = async (e: any) => {
     e.preventDefault();
     try {
+      // toast("authorizing...");
       const { email, password } = inputs;
       if (!email || !password) return console.log("All fields are required.");
       const body = inputs;
@@ -44,6 +50,7 @@ const Login = ({
         redirect("/main");
       } else {
         console.log(parseRes);
+        toast(parseRes);
       }
     } catch (error) {
       return console.error(error);
@@ -83,54 +90,60 @@ const Login = ({
 
   return (
     <div className="Login">
-      <div className="login-header">
-        <h1>Login</h1>
-      </div>
-      <form className="login-form" onSubmit={(e) => authUser(e)}>
-        <div className="login-main">
-          <input
-            className="login-input"
-            onChange={(e) => onChangeSetInputs(e)}
-            type="email"
-            name="email"
-            placeholder="email"
-            required
-          />
-          <input
-            className="login-input"
-            onChange={(e) => onChangeSetInputs(e)}
-            type="password"
-            name="password"
-            placeholder="password"
-            required
-          />
-          <button type="submit" className="login-submit">
-            Sign in
-          </button>
-          <p className="or-between-buttons">or</p>
-          <div className="login-google">
-            <GoogleLogin
-              onSuccess={(credentialResponse: any) => {
-                authUserGoogle(credentialResponse.credential);
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-              // type="icon"
-              shape="circle"
-              useOneTap
-              size="large"
-            />
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className="login-header">
+            <h1>Login</h1>
           </div>
-          <a
-            onClick={() => redirect("/signup")}
-            href=""
-            className="login-signup-link"
-          >
-            Sign up
-          </a>
-        </div>
-      </form>
+          <form className="login-form" onSubmit={(e) => authUser(e)}>
+            <div className="login-main">
+              <input
+                className="login-input"
+                onChange={(e) => onChangeSetInputs(e)}
+                type="email"
+                name="email"
+                placeholder="email"
+                required
+              />
+              <input
+                className="login-input"
+                onChange={(e) => onChangeSetInputs(e)}
+                type="password"
+                name="password"
+                placeholder="password"
+                required
+              />
+              <button type="submit" className="login-submit">
+                Sign in
+              </button>
+              <p className="or-between-buttons">or</p>
+              <div className="login-google">
+                <GoogleLogin
+                  onSuccess={(credentialResponse: any) => {
+                    authUserGoogle(credentialResponse.credential);
+                  }}
+                  onError={() => {
+                    console.log("Login Failed");
+                  }}
+                  shape="circle"
+                  useOneTap
+                  size="large"
+                />
+              </div>
+              <a
+                onClick={() => redirect("/signup")}
+                href=""
+                className="login-signup-link"
+              >
+                Sign up
+              </a>
+            </div>
+          </form>
+          <ToastContainer />
+        </>
+      )}
     </div>
   );
 };

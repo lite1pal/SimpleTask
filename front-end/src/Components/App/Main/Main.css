@@ -2,37 +2,39 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 95%;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  width: 50%;
+  width: 100%;
   margin: 0 auto;
   margin-bottom: 5px;
 }
 
 .header-title {
-  padding: 30px;
-  font-size: 1.2rem;
-  /* margin-right: 30px; */
+  padding: 20%;
+  font-size: 1.5em;
+}
+
+.header-settings {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 5%;
+  opacity: 0;
 }
 
 .header-logout {
   background-color: transparent;
   border: none;
   cursor: pointer;
-  margin: 20px;
+  margin-right: 5%;
 }
 
-/* @media only screen and (max-width: 500px) {
-  .header-title {
-    margin-right: 70px;
-  }
-} */
-
 .tasks-field {
-  width: 80%;
+  width: 90%;
   margin: 0 auto;
   margin-bottom: 20px;
   height: 70%;
@@ -43,16 +45,16 @@
 }
 
 .tasks-field::-webkit-scrollbar {
-  width: 8px; /* Adjust as needed */
+  width: 8px;
 }
 
 .tasks-field::-webkit-scrollbar-thumb {
-  background-color: #ada9a9; /* Adjust as needed */
-  border-radius: 4px; /* Adjust as needed */
+  background-color: #ada9a9;
+  border-radius: 4px;
 }
 
 .tasks-field::-webkit-scrollbar-thumb:hover {
-  background-color: #979595; /* Adjust as needed */
+  background-color: #979595;
 }
 
 .no-items {
@@ -62,13 +64,12 @@
 
 .task-item {
   display: flex;
-  width: 70%;
+  width: 100%;
   font-weight: 800;
   flex-direction: row;
   list-style-type: none;
   padding: 20px;
   margin-bottom: 10px;
-  /* background-color: rgba(159, 142, 142, 0.1); */
   transition: 300ms;
   opacity: 1;
 }
@@ -78,14 +79,13 @@
 }
 
 .task-item .title i {
-  font-size: 0.7rem;
+  font-size: 0.7em;
   opacity: 0.5;
   cursor: default;
 }
 
 .task-item:hover {
-  /* background-color: rgba(159, 142, 142, 0.2); */
-  font-size: 1.1rem;
+  font-size: 1.1em;
 }
 
 .complete-button {
@@ -103,11 +103,11 @@
   margin: 0 auto;
 }
 
-input[type="text"] {
+.input-task {
   flex: 1;
-  font-size: 1rem;
+  font-size: 1em;
   transition: 300ms;
-  width: 15rem;
+  width: 15em;
   padding: 10px;
   margin-right: 15px;
   border: none;
@@ -115,8 +115,8 @@ input[type="text"] {
   outline: none;
 }
 
-input[type="text"]:hover {
-  width: 18rem;
+.input-task:hover {
+  /* width: 18rem; */
   border-color: grey;
 }
 
@@ -163,65 +163,29 @@ input[type="text"]:hover {
   left: 75%;
 }
 
-@media only screen and (max-width: 500px) {
+@media only screen and (min-width: 600px) {
+  .Main {
+    margin: 0 auto;
+    width: 60%;
+    height: 90%;
+  }
+
   .header {
-    width: 100%;
-  }
-}
-
-@media only screen and (max-width: 500px) {
-  .task-field {
-    width: 100%;
-  }
-}
-
-@media only screen and (max-width: 360px) {
-  .header-title {
-    font-size: 1.1rem;
-  }
-
-  .task-item {
-    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-between;
     width: 100%;
   }
 
-  input[type="text"] {
-    width: 10rem;
-    display: block;
-  }
-
-  .add-task {
-    font-size: 10px;
-    line-height: 20px;
-    width: 80px;
-    margin-top: 15px;
-    margin-left: 50px;
-    margin-bottom: 20px;
-  }
-
-  .add-task:hover {
-    background-color: #f7fafa;
-    font-size: 11px;
-  }
-}
-
-@media only screen and (max-width: 345px) {
   .header-title {
-    font-size: 1rem;
+    padding: 8%;
   }
-  .task-item {
-    font-size: 0.7rem;
-  }
-}
 
-@media only screen and (max-width: 328px) {
-  .header-title {
-    font-size: 0.9rem;
+  .tasks-field {
+    height: 100%;
   }
-}
 
-@media only screen and (max-width: 313px) {
-  .header-title {
-    font-size: 0.8rem;
+  .add-icon {
+    top: 55%;
+    left: 70%;
   }
 }
