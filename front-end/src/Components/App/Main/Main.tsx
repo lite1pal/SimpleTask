@@ -155,13 +155,16 @@ const Main = ({
                 tasks.map((task: Task) => {
                   deadlineString =
                     task.deadline !== null
-                      ? new Date(task.deadline).toLocaleString("uk-UA", {
-                          weekday: "long",
-                          month: "long",
-                          day: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                        })
+                      ? new Date(task.deadline).toLocaleString(
+                          navigator.language === "uk" ? "uk-UA" : undefined,
+                          {
+                            weekday: "long",
+                            month: "long",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                          }
+                        )
                       : "";
                   console.log(task);
                   return (

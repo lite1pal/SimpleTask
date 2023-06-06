@@ -97,7 +97,6 @@ const Login = ({
             : "You signed in successfully",
           { timeout: 5000 }
         );
-        Notify.warning(navigator.language);
         Cookies.set("sessionId", parseRes.user.sessionId);
         Cookies.set("name", parseRes.user.name);
         Cookies.set("email", parseRes.user.email);
