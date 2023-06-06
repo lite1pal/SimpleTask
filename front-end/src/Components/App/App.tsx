@@ -14,6 +14,7 @@ const App = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const apiUrl = "https://simple-task-server.onrender.com";
+  // const apiUrl = "http://localhost:4001";
 
   const changeAuthStatus = (boolean: boolean) => {
     setIsAuth(boolean);

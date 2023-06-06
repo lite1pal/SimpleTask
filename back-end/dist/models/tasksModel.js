@@ -27,7 +27,7 @@ const mongoose_1 = __importStar(require("mongoose"));
 const taskSchema = new mongoose_1.Schema({
     title: { type: String, required: true },
     completed: { type: Boolean, required: true, default: false },
-    deadline: { type: Date, required: true, default: "2100-06-01T12:00:00" },
+    deadline: { type: Date, required: false, default: null },
     user: { type: mongoose_1.default.Types.ObjectId, ref: "User", required: true },
 });
 const Task = mongoose_1.default.model("Task", taskSchema);

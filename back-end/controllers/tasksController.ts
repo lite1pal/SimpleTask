@@ -15,6 +15,7 @@ const getTasks = async (req: Request, res: Response) => {
 const createTask = async (req: Request, res: Response) => {
   try {
     const { title, deadline, user_id } = req.body;
+    console.log(deadline);
     if (!title || !user_id)
       return res.status(400).json("Some of req.body values is missing");
 
@@ -24,6 +25,7 @@ const createTask = async (req: Request, res: Response) => {
     } else {
       newTask = await Task.create({ title, deadline, user: user_id });
     }
+    console.log(newTask);
     return res.status(200).json({ message: "Task is created.", newTask });
   } catch (error) {
     console.error(error);

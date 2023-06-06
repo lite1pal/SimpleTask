@@ -29,6 +29,7 @@ exports.getTasks = getTasks;
 const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { title, deadline, user_id } = req.body;
+        console.log(deadline);
         if (!title || !user_id)
             return res.status(400).json("Some of req.body values is missing");
         let newTask;
@@ -38,6 +39,7 @@ const createTask = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         else {
             newTask = yield tasksModel_1.default.create({ title, deadline, user: user_id });
         }
+        console.log(newTask);
         return res.status(200).json({ message: "Task is created.", newTask });
     }
     catch (error) {

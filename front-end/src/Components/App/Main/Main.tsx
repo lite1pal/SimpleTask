@@ -29,7 +29,6 @@ const Main = ({
 }) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [addTaskComponentVision, setAddTaskComponentVision] = useState(false);
-  // const [taskItemVision, setTaskItemVision] = useState(true);
   const taskRef = useRef(null);
   const addTask = useRef<HTMLElement | null>(null);
   let deadlineString: string;
@@ -165,7 +164,7 @@ const Main = ({
                           minute: "numeric",
                         })
                       : "";
-
+                  console.log(task);
                   return (
                     <li ref={taskRef} className="task-item" key={task._id}>
                       <div className="complete-button">
