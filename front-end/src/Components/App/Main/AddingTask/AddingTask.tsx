@@ -3,6 +3,8 @@ import "./AddingTask.css";
 
 import Cookies from "js-cookie";
 
+import { Notify } from "notiflix";
+
 const AddingTask = ({
   addTask,
   addTaskComponentVision,
@@ -22,7 +24,12 @@ const AddingTask = ({
       let { title, deadline } = inputs;
       deadline = new Date(deadline);
       const body = { title, deadline, user_id: Cookies.get("id") };
-      if (!title || !deadline) return console.log("All inputs are required.");
+      if (!title || !deadline)
+        return Notify.failure(
+          navigator.language === "uk"
+            ? "Заповніть всі поля, щоб додати справу з дедлайном"
+            : "All inputs are required"
+        );
       const requestOptions = {
         method: "POST",
         headers: {
@@ -54,7 +61,9 @@ const AddingTask = ({
     >
       <form onSubmit={(e) => createTaskWithDeadline(e)}>
         <div className="task-title">
-          <h5>What is a task?</h5>
+          <h5>
+            {navigator.language === "uk" ? "Що за справа?" : "What is a task?"}
+          </h5>
           <input
             className="task-input text"
             onChange={onChangeSetInputs}
@@ -63,7 +72,7 @@ const AddingTask = ({
           />
         </div>
         <div className="task-deadline">
-          <h5>Due date</h5>
+          <h5>{navigator.language === "uk" ? "Дедлайн" : "Due date"}</h5>
           <input
             className="task-input deadline"
             onChange={onChangeSetInputs}
@@ -73,7 +82,7 @@ const AddingTask = ({
           />
         </div>
         <button type="submit" className="add-task2" title="Add a task">
-          Add a task
+          {navigator.language === "uk" ? "Додати" : "Add a task"}
         </button>
       </form>
     </div>

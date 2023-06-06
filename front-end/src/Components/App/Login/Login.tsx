@@ -9,6 +9,8 @@ import Loading from "../../Loading/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { Notify } from "notiflix";
+
 const Login = ({
   changeAuthStatus,
   apiUrl,
@@ -28,7 +30,6 @@ const Login = ({
   const authUser = async (e: any) => {
     e.preventDefault();
     try {
-      // toast("authorizing...");
       const { email, password } = inputs;
       if (!email || !password) return console.log("All fields are required.");
       const body = inputs;
@@ -39,9 +40,19 @@ const Login = ({
         },
         body: JSON.stringify(body),
       };
+      Notify.info(
+        navigator.language === "uk"
+          ? "Зачекайте трішки, будь ласка, сервер просинається після тяжкого робочого дня"
+          : "Wait a bit, please, the server is waking up after a hard work day"
+      );
       const response = await fetch(`${apiUrl}/users/auth`, requestOptions);
       const parseRes = await response.json();
       if (response.ok) {
+        Notify.success(
+          navigator.language === "uk"
+            ? "Вхід успішний"
+            : "You signed in successfully"
+        );
         Cookies.set("sessionId", parseRes.sessionId);
         Cookies.set("name", parseRes.user.name);
         Cookies.set("email", parseRes.user.email);
@@ -67,6 +78,12 @@ const Login = ({
         },
         body: JSON.stringify(body),
       };
+      Notify.info(
+        navigator.language === "uk"
+          ? "Зачекайте трішки, будь ласка, сервер просинається після тяжкого робочого дня"
+          : "Wait a bit, please, the server is waking up after a hard work day",
+        { timeout: 5000 }
+      );
       const response = await fetch(
         `${apiUrl}/users/auth/google`,
         requestOptions
@@ -74,6 +91,12 @@ const Login = ({
       const parseRes = await response.json();
       console.log(parseRes);
       if (response.ok) {
+        Notify.success(
+          navigator.language === "uk"
+            ? "Вхід успішний"
+            : "You signed in successfully",
+          { timeout: 5000 }
+        );
         Cookies.set("sessionId", parseRes.user.sessionId);
         Cookies.set("name", parseRes.user.name);
         Cookies.set("email", parseRes.user.email);
@@ -95,7 +118,7 @@ const Login = ({
       ) : (
         <>
           <div className="login-header">
-            <h1>Login</h1>
+            <h1>{navigator.language === "uk" ? "Вхід" : "Login"}</h1>
           </div>
           <form className="login-form" onSubmit={(e) => authUser(e)}>
             <div className="login-main">
@@ -112,13 +135,17 @@ const Login = ({
                 onChange={(e) => onChangeSetInputs(e)}
                 type="password"
                 name="password"
-                placeholder="password"
+                placeholder={
+                  navigator.language === "uk" ? "пароль" : "password"
+                }
                 required
               />
               <button type="submit" className="login-submit">
-                Sign in
+                {navigator.language === "uk" ? "Ввійти" : "Sign in"}
               </button>
-              <p className="or-between-buttons">or</p>
+              <p className="or-between-buttons">
+                {navigator.language === "uk" ? "або" : "or"}
+              </p>
               <div className="login-google">
                 <GoogleLogin
                   onSuccess={(credentialResponse: any) => {
@@ -137,7 +164,7 @@ const Login = ({
                 href=""
                 className="login-signup-link"
               >
-                Sign up
+                {navigator.language === "uk" ? "Створити аккаунт" : "Sign up"}
               </a>
             </div>
           </form>

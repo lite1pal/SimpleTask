@@ -6,7 +6,6 @@ import "./Main.css";
 import AddingTask from "./AddingTask/AddingTask";
 import Loading from "../../Loading/Loading";
 
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface Task {
@@ -156,7 +155,7 @@ const Main = ({
                 tasks.map((task: Task) => {
                   deadlineString =
                     task.deadline !== null
-                      ? new Date(task.deadline).toLocaleString(undefined, {
+                      ? new Date(task.deadline).toLocaleString("uk-UA", {
                           weekday: "long",
                           month: "long",
                           day: "numeric",
@@ -189,7 +188,11 @@ const Main = ({
                   );
                 })
               ) : (
-                <li className="no-items">No tasks yet</li>
+                <li className="no-items">
+                  {navigator.language === "uk"
+                    ? "Ще немає справ"
+                    : "No tasks yet"}
+                </li>
               )}
             </ul>
             <div className="add-icon">
@@ -213,14 +216,15 @@ const Main = ({
                 autoComplete="off"
                 type="text"
                 name="task"
-                placeholder="Quick task"
+                placeholder={
+                  navigator.language === "uk" ? "Швидка справа" : "Quick task"
+                }
               />
               <button className="add-task" title="Add a task" type="submit">
-                Add a task
+                {navigator.language === "uk" ? "Додати" : "Add a task"}
               </button>
             </form>
           </div>
-          <ToastContainer />
         </>
       )}
     </div>
