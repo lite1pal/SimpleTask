@@ -66,7 +66,6 @@ const Main = ({
       };
       const response = await fetch(`${apiUrl}/tasks/create`, requestOptions);
       const parseRes = await response.json();
-      console.log(parseRes);
       if (response.ok) {
         e.target.task.value = "";
         const newTask: Task = parseRes.newTask;
@@ -156,6 +155,7 @@ const Main = ({
             <ul>
               {tasks.length > 0 ? (
                 tasks.map((task: Task) => {
+                  console.log(task.deadline.toString());
                   deadlineString =
                     task.deadline.toString() !== "2100-06-01T09:00:00.000Z"
                       ? new Date(task.deadline).toLocaleString(undefined, {
