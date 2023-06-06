@@ -1,15 +1,10 @@
 .App {
-  position: absolute;
-  top: 0px;
   width: 100vw;
   height: 100vh;
-  overflow-y: hidden;
-  z-index: 2;
 }
 
 @media only screen and (min-width: 600px) {
   .App {
-    position: static;
     display: flex;
     width: 100vw;
     height: 100vh;
