@@ -13,7 +13,7 @@ interface Task {
   _id: string;
   title: string;
   completed: boolean;
-  deadline: Date;
+  deadline: null | Date;
   user: string;
 }
 
