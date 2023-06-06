@@ -155,9 +155,8 @@ const Main = ({
             <ul>
               {tasks.length > 0 ? (
                 tasks.map((task: Task) => {
-                  console.log(task.deadline.toString());
                   deadlineString =
-                    task.deadline.toString() !== "2100-06-01T09:00:00.000Z"
+                    task.deadline !== null
                       ? new Date(task.deadline).toLocaleString(undefined, {
                           weekday: "long",
                           month: "long",
