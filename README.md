@@ -26,13 +26,12 @@ SimpleTask provides user account functionality, allowing you to create a persona
 
 To start using SimpleTask, follow these steps:
 
-- Visit the SimpleTask website at www.simpletask.com.
-- Click on the "Sign Up" button to create a new account or log in if you already have one.
+- Visit the SimpleTask website https://simple-task.onrender.com.
+- Click on the "Sign in with Google" to sign in with your google account.
 - Once logged in, you'll be directed to the main dashboard, where you can view and manage your tasks.
-- Click on the "Add Task" button to create a new task. - Provide the task details, such as name, description, due date, and priority level.
-- Use the search bar or filters to quickly find specific tasks or narrow down your task list.
+- Click on the "Add a task" button to create a new task.
+- Click on the black round plus button to add a task with deadline.
 - Mark tasks as complete as you finish them to track your progress and keep your task list organized.
-- Customize your profile and notification settings according to your preferences.
 - Enjoy the benefits of a simplified and efficient task management experience with SimpleTask!
 
 ## Conclusion
